@@ -8,13 +8,15 @@ response = client.describe_db_instances()
 databases = response['DBInstances']
 
 for database in databases:
-    arn = database['DBInstanceArn']
+    if database['DBName'] == 'dev_mamas_rds':
+        endpoint = database['Endpoint']['Address']
 
 mydb = mysql.connector.connect(
-  host=arn,
+  host=endpoint,
   user="admin",
   passwd="9aDrG}GK$>[#E4A"
 )
+
 cursor = mydb.cursor()
 DB_NAME = "MAMAS_DB"
 def create_database(cursor):
