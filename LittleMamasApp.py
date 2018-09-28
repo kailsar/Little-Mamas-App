@@ -1,5 +1,11 @@
 import mysql.connector
 from mysql.connector import errorcode
+import boto3
+
+client = boto3.client('rds', region_name='eu-west-1')
+response = client.describe_db_instances()
+
+print response
 
 mydb = mysql.connector.connect(
   host="terraform-20180927132540783300000007.comuflukwjwy.eu-west-1.rds.amazonaws.com",
