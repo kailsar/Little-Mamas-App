@@ -5,10 +5,13 @@ import boto3
 client = boto3.client('rds', region_name='eu-west-1')
 response = client.describe_db_instances()
 
-print response
+databases = response['DBInstances']
+
+for database in databases:
+    arn = database['DBInstanceArn']
 
 mydb = mysql.connector.connect(
-  host="terraform-20180927132540783300000007.comuflukwjwy.eu-west-1.rds.amazonaws.com",
+  host=arn,
   user="admin",
   passwd="9aDrG}GK$>[#E4A"
 )
