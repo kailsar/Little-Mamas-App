@@ -1,15 +1,18 @@
 import mysql.connector
 from mysql.connector import errorcode
 import boto3
+import time
 
+endpoint = 'null'
 client = boto3.client('rds', region_name='eu-west-1')
-response = client.describe_db_instances()
-
-databases = response['DBInstances']
-
-for database in databases:
-    if database['DBName'] == 'dev_mamas_rds':
-        endpoint = database['Endpoint']['Address']
+while endpoint == 'null':
+    response = client.describe_db_instances()
+    databases = response['DBInstances']
+    for database in databases:
+        if database['DBName'] == 'dev_mamas_rds':
+            endpoint = database['Endpoint']['Address']
+    print("Waiting 1 min...")
+    time.sleep(60)
 
 mydb = mysql.connector.connect(
   host=endpoint,
